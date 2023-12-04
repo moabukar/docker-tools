@@ -30,24 +30,24 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
+        # name: Login to GitHub Container Registry
+        # uses: docker/login-action@v1
+        # with:
+        #   registry: ghcr.io
+        #   username: ${{ github.repository_owner }}
+        #   password: ${{ secrets.CR_PAT }}
       -
-        name: Build and push (ubuntu2204)
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile.ubuntu2204
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            moabukar/tools:latest,ghcr.io/moabukar/tools:latest
-            moabukar/tools:ubuntu,ghcr.io/moabukar/tools:ubuntu
-            moabukar/tools:ubuntu2204,ghcr.io/moabukar/tools:ubuntu2204
+        -
+          name: Build and push (ubuntu2204)
+          uses: docker/build-push-action@v2
+          with:
+            context: .
+            file: Dockerfile.ubuntu2204
+            platforms: linux/amd64,linux/arm64
+            push: true
+            tags: moabukar/tools:latest
+                  moabukar/tools:ubuntu
+                  moabukar/tools:ubuntu2204
       -
         name: Build and push (ubuntu2004)
         uses: docker/build-push-action@v2
@@ -56,8 +56,7 @@ jobs:
           file: Dockerfile.ubuntu2004
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            moabukar/tools:ubuntu2004,ghcr.io/moabukar/tools:ubuntu2004
+          tags: moabukar/tools:ubuntu2004
       -
         name: Build and push (ubuntu1804)
         uses: docker/build-push-action@v2
@@ -66,7 +65,7 @@ jobs:
           file: Dockerfile.ubuntu1804
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: moabukar/tools:ubuntu1804,ghcr.io/moabukar/tools:ubuntu1804
+          tags: moabukar/tools:ubuntu1804
       -
         name: Build and push (alpine)
         uses: docker/build-push-action@v2
@@ -75,4 +74,4 @@ jobs:
           file: Dockerfile.alpine
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: moabukar/tools:alpine,ghcr.io/moabukar/tools:alpine
+          tags: moabukar/tools:alpine
