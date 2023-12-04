@@ -7,63 +7,46 @@ on:
     - cron: '21 3 * * 0' # weekly build
 
 jobs:
-  buildx:
+  build-and-publish:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v2
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-      -
-        name: Available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push (ubuntu2204)
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile.ubuntu2204
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: moabukar/tools:latest
-                moabukar/tools:ubuntu
-                moabukar/tools:ubuntu2204
-      -
-        name: Build and push (ubuntu2004)
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile.ubuntu2004
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: moabukar/tools:ubuntu2004
-      -
-        name: Build and push (ubuntu1804)
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile.ubuntu1804
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: moabukar/tools:ubuntu1804
-      -
-        name: Build and push (alpine)
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile.alpine
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: moabukar/tools:alpine
+    - name: Check out
+      uses: actions/checkout@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and Publish (ubuntu2204)
+      run: |
+        registry="moabukar"
+        tag="tools:ubuntu2204"
+        docker build . -f Dockerfile.ubuntu2204 -t ${registry}/${tag}
+        docker push ${registry}/${tag}
+
+    - name: Build and Publish (ubuntu2004)
+      run: |
+        registry="moabukar"
+        tag="tools:ubuntu2004"
+        docker build . -f Dockerfile.ubuntu2004 -t ${registry}/${tag}
+        docker push ${registry}/${tag}
+
+    - name: Build and Publish (ubuntu1804)
+      run: |
+        registry="moabukar"
+        tag="tools:ubuntu1804"
+        docker build . -f Dockerfile.ubuntu1804 -t ${registry}/${tag}
+        docker push ${registry}/${tag}
+
+    - name: Build and Publish (alpine)
+      run: |
+        registry="moabukar"
+        tag="tools:alpine"
+        docker build . -f Dockerfile.alpine -t ${registry}/${tag}
+        docker push ${registry}/${tag}
