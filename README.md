@@ -11,6 +11,12 @@ docker run --rm -it moabukar/tools:<tag> /bin/bash
 # OR docker run --rm -it ghcr.io/moabukar/tools /bin/bash
 ```
 
+## Testing locally
+
+`docker build . -f Dockerfile.alpine -t alpine-local`
+`docker run --rm -it alpine-local /bin/bash` - uses bash
+`docker run --rm -it alpine-local /bin/sh` - uses sh
+
 Supported tags and respective Dockerfile links
 ----
 - [`ubuntu2204`](https://github.com/moabukar/docker-tools/blob/main/Dockerfile.ubuntu2204)
