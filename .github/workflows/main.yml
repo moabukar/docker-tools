@@ -1,0 +1,78 @@
+name: docker-tools
+
+on:
+  push:
+    branches: main
+  schedule:
+    - cron: '21 3 * * 0' # weekly build
+
+jobs:
+  buildx:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+      -
+        name: Build and push (ubuntu2204)
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile.ubuntu2204
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            moabukar/tools:latest,ghcr.io/moabukar/tools:latest
+            moabukar/tools:ubuntu,ghcr.io/moabukar/tools:ubuntu
+            moabukar/tools:ubuntu2204,ghcr.io/moabukar/tools:ubuntu2204
+      -
+        name: Build and push (ubuntu2004)
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile.ubuntu2004
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            moabukar/tools:ubuntu2004,ghcr.io/moabukar/tools:ubuntu2004
+      -
+        name: Build and push (ubuntu1804)
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile.ubuntu1804
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: moabukar/tools:ubuntu1804,ghcr.io/moabukar/tools:ubuntu1804
+      -
+        name: Build and push (alpine)
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile.alpine
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: moabukar/tools:alpine,ghcr.io/moabukar/tools:alpine
