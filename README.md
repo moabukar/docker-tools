@@ -7,7 +7,7 @@
 A simple docker image with various tools built-in. Example usage:
 
 ```bash
-docker run --rm -it moabukar/tools /bin/bash
+docker run --rm -it moabukar/tools:<tag> /bin/bash
 # OR docker run --rm -it ghcr.io/moabukar/tools /bin/bash
 ```
 
