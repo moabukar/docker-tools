@@ -3,6 +3,8 @@ name: docker-tools
 on:
   push:
     branches: main
+    paths:
+      - 'Dockerfile*'
   schedule:
     - cron: '21 3 * * 0' # weekly build
 

@@ -1,5 +1,5 @@
 # Docker tool
-==============
+
 ![docker-tools](https://github.com/moabukar/docker-tools/workflows/docker-tools/badge.svg?branch=main)
 ![Docker Pulls](https://img.shields.io/docker/pulls/moabukar/tools)
 ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/moabukar/tools?sort=semver)
