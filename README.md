@@ -1,4 +1,4 @@
-# Docker tool
+# Docker tools
 
 ![docker-tools](https://github.com/moabukar/docker-tools/workflows/docker-tools/badge.svg?branch=main)
 ![Docker Pulls](https://img.shields.io/docker/pulls/moabukar/tools)

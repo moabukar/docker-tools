@@ -52,3 +52,4 @@ jobs:
         tag="tools:alpine"
         docker build . -f Dockerfile.alpine -t ${registry}/${tag}
         docker push ${registry}/${tag}
+
