@@ -5,6 +5,7 @@ on:
     branches: main
     paths:
       - 'Dockerfile*'
+      - '.github/workflows/main.yml'
   schedule:
     - cron: '21 3 * * 0' # weekly build
 
